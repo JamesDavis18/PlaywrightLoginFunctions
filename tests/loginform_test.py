@@ -1,10 +1,14 @@
 import re
 from playwright.sync_api import sync_playwright, Page, expect
+from tests.config_loader import get_value
 
 user_login = "tomsmith"
 user_login_fail = "stevesmith"
 user_password = "SuperSecretPassword!"
 user_password_fail = "NotSecretPassword%"
+
+def heading_text():
+    return get_value("pages", "loginpage_heading")
 
 def get_usernameinput(self):
         return self.page.locator("form#login").get_by_role("input", name="username")
@@ -17,16 +21,13 @@ class LoginPage:
         self.page = page
 
     def test_has_title(self):
-        self.goto("https://the-internet.herokuapp.com")
-
         expect(self).to_have_title(re.compile("The Internet"))
 
-
     def test_get_login_link(self):
-        self.get_by_role("link", name="/login").click()
+        self.goto("/login")
 
         expect(self.get_by_role("heading", name="Login Page")).to_be_visible()
-        expect(self.get_by_text("Login Page"))
+        expect(self.page.locator("h3")).to_have_text(heading_text())
 
 
     def test_get_form_inputs(self):

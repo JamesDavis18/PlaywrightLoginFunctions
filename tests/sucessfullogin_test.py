@@ -18,7 +18,7 @@ class LoggedInPage:
     def test_is_subheading_visible(self):
         subheading = self.page.get_by_role("heading", name="Welcome to the Secure Area")
         expect(subheading).to_be_visible()
-        expect(subheading).to_contain_text()
+        expect(subheading).to_contain_text(subheading_text)
 
     def test_logout(self):
         logout_btn = self.page.get_by_role("link", name="Logout")
