@@ -27,7 +27,4 @@ class LoggedInPage:
         
         expect(self.page.get_by_role("heading", name="Secure Area")).not_to_be_visible()
 
-
-
-    
 print(f"{LoggedInPage} tests completed")

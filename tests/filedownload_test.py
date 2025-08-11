@@ -1,8 +1,6 @@
 import re, pytest
 from playwright.sync_api import sync_playwright, Page, expect
-
-def heading_text(pytestconfig):
-    return pytestconfig.getini("filedownloadpage_heading")
+from tests.config_loader import get_value
 
 class FileDownloadPage:
     
@@ -17,3 +15,4 @@ class FileDownloadPage:
         expect(self).get_by_role("heading")
         assert "" in page.content()
     
+print(f"{FileDownloadPage} tests completed")

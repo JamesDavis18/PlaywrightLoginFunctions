@@ -1,10 +1,12 @@
 import re, pytest
 from playwright.sync_api import sync_playwright, Page, expect
+from tests.config_loader import get_value
+
+def pytest_addoption(parser):
+    parser.addini("checkboxpage_heading", help="Heading text for the Checkboxes page")
 
 def heading_text(pytestconfig):
-    return pytestconfig.getini("hoverpage_heading")
-
-heading_text = "Checkboxes"
+    return pytestconfig.getini("checkboxpage_heading")
 
 def get_checkbox1(self):
     return self.page.locator("form#checkboxes").get_by_role("checkbox").first
@@ -71,3 +73,4 @@ class CheckBoxPage:
         expect(self.page.get_by_role("checkbox").first).to_be_checked()
         self.page.locator("form#checkboxes")
         self.page.locator() """
+print(f"{CheckBoxPage} tests completed")

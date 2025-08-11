@@ -1,8 +1,9 @@
 import re, pytest
 from playwright.sync_api import sync_playwright, Page, expect
+from tests.config_loader import get_value
 
-def heading_text(pytestconfig):
-    return pytestconfig.getini("hoverpage_heading")
+def heading_text():
+    return get_value("pages", "hoverpage_heading")
 
 def get_hoverelement1(self):
     return self.page.locator("#content").get_by_role("img", name="User Avatar").first
@@ -29,10 +30,9 @@ class HoverProfilePage:
         self.get_by_role("link", name="Hovers").click()
 
         expect(self.get_by_role("heading", name="Login Page")).to_be_visible()
-        heading = self.page.locator("h3")
-        expect(heading.inner_text() == heading_text)
+        expect(self.page.locator("h3")).to_have_text(heading_text())
     
-    def hover_over_elements(self):
+    def test_hover_over_elements(self):
         hoverimg1 = get_hoverelement1()
         expect(hoverimg1).to_be_enabled()
         hoverimg1.hover()
@@ -54,5 +54,6 @@ class HoverProfilePage:
         userheading3 = self.get_by_role("heading", name="name: user1")
         expect(userheading3).to_be_visible()
 
+print(f"{HoverProfilePage} tests completed")
 
             
