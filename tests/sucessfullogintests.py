@@ -13,6 +13,7 @@ class LoggedInPage:
 
     def test_is_loggedin(self):
         expect(self).get_by_role("heading", name="Secure Area", exact=True)
+        expect(self).to_have_url("**/")
     
     def test_is_subheading_visible(self):
         subheading = self.page.get_by_role("heading", name="Welcome to the Secure Area")
@@ -25,6 +26,8 @@ class LoggedInPage:
         logout_btn.click()
         
         expect(self.page.get_by_role("heading", name="Secure Area")).not_to_be_visible()
+
+
 
     
 print(f"{LoggedInPage} tests completed")
