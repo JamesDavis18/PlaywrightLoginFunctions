@@ -1,21 +1,25 @@
-import re, pytest
+import re, pytest, configparser
 from playwright.sync_api import sync_playwright, Playwright
 
-#Supported values "chromium", "firefox", "webkit"
-BROWSER_TYPE = "firefox"
+#BROWSER_TYPE = "firefox"
+def pytest_browser_source(parser):
+    parser.addini("browser_type", help="Browser type: chromium, firefox, webkit")
+    parser.addoption("--browser", action="store", help="Override browser type")
 
 @pytest.fixture(scope="session")
-def browser():
+def browser(pytestconfig):
+    browser_type = pytestconfig.getini("browser_type") or pytestconfig.getoption("browser")
+
     #Launching one browser instance per test session
     with sync_playwright() as p:
-        if BROWSER_TYPE == "chromium":
+        if browser_type == "chromium":
             browser = p.chromium.launch(headless=False)
-        if BROWSER_TYPE == "firefox":
+        if browser_type == "firefox":
             browser = p.firefox.launch(headless=False)
-        if BROWSER_TYPE == "webkit":
+        if browser_type == "webkit":
             browser = p.webkit.launch(headless=False)
         else:
-            raise ValueError(f"Invalid browser type: {BROWSER_TYPE}")
+            raise ValueError(f"Invalid browser type: {browser_type}")
         
         yield browser
         browser.close()

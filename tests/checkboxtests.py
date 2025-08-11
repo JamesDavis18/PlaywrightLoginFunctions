@@ -1,5 +1,8 @@
-import re
+import re, pytest
 from playwright.sync_api import sync_playwright, Page, expect
+
+def heading_text(pytestconfig):
+    return pytestconfig.getini("hoverpage_heading")
 
 heading_text = "Checkboxes"
 
@@ -26,7 +29,8 @@ class CheckBoxPage:
         self.page.get_by_role("link", name="/Checkboxes").click()
 
         expect(self.page.get_by_role("heading", name="Checkboxes")).to_be_visible()
-        expect(self.page.get_by_text(heading_text))
+        heading = self.page.locator("h3")
+        expect(heading.inner_text() == heading_text)
     
     def check_individual_checkboxes(self):
         checkbox1_locator = get_checkbox1()
