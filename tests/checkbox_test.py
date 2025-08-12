@@ -2,8 +2,6 @@ import re, pytest
 from playwright.sync_api import sync_playwright, Page, expect
 from tests.config_loader import get_value
 
-def pytest_addoption(parser):
-    parser.addini("checkboxpage_heading", help="Heading text for the Checkboxes page")
 
 def heading_text(pytestconfig):
     return pytestconfig.getini("checkboxpage_heading")
@@ -14,7 +12,7 @@ def get_checkbox1(self):
 def get_checkbox2(self):
     return self.page.locator("form#checkboxes").get_by_role("checkbox").nth(1)
 
-class CheckBoxPage:
+class TestCheckBoxPage:
 
     def __init__(self, page: Page):
         self.page = page
@@ -22,7 +20,7 @@ class CheckBoxPage:
     def test_has_title(self):
         expect(self).to_have_title(re.compile("The Internet"))
     
-    def is_home(self, page):
+    def test_is_home(self, page):
         expect(self).to_have_url("**/")
         expect(self).get_by_role("heading")
         assert "" in page.content()
@@ -34,7 +32,7 @@ class CheckBoxPage:
         heading = self.page.locator("h3")
         expect(heading.inner_text() == heading_text)
     
-    def check_individual_checkboxes(self):
+    def test_check_individual_checkboxes(self):
         checkbox1_locator = get_checkbox1()
         checkbox1_locator.first.check()
         expect(checkbox1_locator).to_be_checked()
@@ -43,7 +41,7 @@ class CheckBoxPage:
         checkbox2_locator.first.check()
         expect(checkbox1_locator).to_be_checked()
     
-    def uncheck_individual_checkboxes(self):
+    def test_uncheck_individual_checkboxes(self):
         checkbox1_locator = get_checkbox1()
         checkbox1_locator.first.uncheck()
         expect(checkbox1_locator).not_to_be_checked()
@@ -52,7 +50,7 @@ class CheckBoxPage:
         checkbox2_locator.first.uncheck()
         expect(checkbox1_locator).not_to_be_checked()
 
-    def checkbox_label_test(self):
+    def test_checkbox_labels(self):
         checkbox1_label = self.page.locator("form#checkboxes").get_by_text("checkbox 1")
         expect(checkbox1_label).to_be_visible()
         expect(checkbox1_label).to_be_in_viewport()
@@ -73,4 +71,4 @@ class CheckBoxPage:
         expect(self.page.get_by_role("checkbox").first).to_be_checked()
         self.page.locator("form#checkboxes")
         self.page.locator() """
-print(f"{CheckBoxPage} tests completed")
+print(f"{TestCheckBoxPage} tests completed")

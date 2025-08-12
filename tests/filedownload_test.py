@@ -5,7 +5,7 @@ from tests.config_loader import get_value
 def heading_text():
     return get_value("pages", "hfiledownloadpage_heading")
 
-class FileDownloadPage:
+class TestFileDownloadPage:
     
     def __init__(self, page: Page):
         self.page = page
@@ -24,4 +24,4 @@ class FileDownloadPage:
         expect(self.get_by_role("heading", name="Login Page")).to_be_visible()
         expect(self.page.locator("h3")).to_have_text(heading_text())
     
-print(f"{FileDownloadPage} tests completed")
+print(f"{TestFileDownloadPage} tests completed")

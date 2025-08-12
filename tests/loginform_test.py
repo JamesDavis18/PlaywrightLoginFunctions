@@ -16,14 +16,14 @@ def get_usernameinput(self):
 def get_passwordinput(self):
         return self.page.locator("form#login").get_by_role("input", name="password")
 
-class LoginPage:
-    def _init_(self, page: Page):
-        self.page = page
+class TestLoginPage:
+    #def __init__(self, page: Page):
+        #self.page = page
 
-    def test_has_title(self):
+    def test_has_title(self, page: Page):
         expect(self).to_have_title(re.compile("The Internet"))
 
-    def test_get_login_link(self):
+    def test_get_login_link(self, page: Page):
         self.goto("/login")
 
         expect(self.get_by_role("heading", name="Login Page")).to_be_visible()
@@ -67,4 +67,4 @@ class LoginPage:
         loggedin_heading = self.get_by_role("heading", name="Secure Area")
         expect(loggedin_heading).to_be_visible()
 
-print(f"{LoginPage} tests completed.")
+print(f"{TestLoginPage} tests completed.")

@@ -3,7 +3,7 @@ from playwright.sync_api import Playwright, Page, expect
 
 subheading_text = "Welcome to the Secure Area. When you are done click logout below."
 
-class LoggedInPage:
+class TestLoggedInPage:
 
     def _init_(self, page: Page):
         self.page = page
@@ -27,4 +27,4 @@ class LoggedInPage:
         
         expect(self.page.get_by_role("heading", name="Secure Area")).not_to_be_visible()
 
-print(f"{LoggedInPage} tests completed")
+print(f"{TestLoggedInPage} tests completed")

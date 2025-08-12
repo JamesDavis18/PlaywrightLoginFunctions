@@ -14,7 +14,7 @@ def get_hoverelement2(self):
 def get_hoverelement3(self):
     return self.page.locator("#content").get_by_role("img", name="User Avatar").nth(2)
 
-class HoverProfilePage:
+class TestHoverProfilePage:
     def __init__(self, page: Page):
         self.page = page
     
@@ -54,6 +54,6 @@ class HoverProfilePage:
         userheading3 = self.get_by_role("heading", name="name: user1")
         expect(userheading3).to_be_visible()
 
-print(f"{HoverProfilePage} tests completed")
+print(f"{TestHoverProfilePage} tests completed")
 
             
