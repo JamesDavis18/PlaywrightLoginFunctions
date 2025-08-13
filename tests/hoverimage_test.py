@@ -1,6 +1,7 @@
 import re, pytest
 from playwright.sync_api import sync_playwright, Page, expect
 from tests.config_loader import get_value
+from conftest import page
 
 def heading_text():
     return get_value("pages", "hoverpage_heading")
@@ -15,24 +16,24 @@ def get_hoverelement3(self):
     return self.page.locator("#content").get_by_role("img", name="User Avatar").nth(2)
 
 class TestHoverProfilePage:
-    def __init__(self, page: Page):
-        self.page = page
+    #def __init__(self, page: Page):
+        #self.page = page
     
-    def test_has_title(self):
-        expect(self).to_have_title(re.compile("The Internet"))
+    def test_has_title(page):
+        expect(page).to_have_title(re.compile("The Internet"))
     
     def is_home(self, page):
         expect(self).to_have_url("**/")
         expect(self).get_by_role("heading")
         assert "" in page.content()
     
-    def test_get_hover_link(self):
+    def test_get_hover_link(self, page: Page):
         self.get_by_role("link", name="Hovers").click()
 
         expect(self.get_by_role("heading", name="Login Page")).to_be_visible()
         expect(self.page.locator("h3")).to_have_text(heading_text())
     
-    def test_hover_over_elements(self):
+    def test_hover_over_elements(self, page: Page):
         hoverimg1 = get_hoverelement1()
         expect(hoverimg1).to_be_enabled()
         hoverimg1.hover()

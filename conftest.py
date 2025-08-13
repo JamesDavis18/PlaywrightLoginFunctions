@@ -29,17 +29,19 @@ def browser(pytestconfig):
         yield browser
         browser.close()
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 def page(browser, pytestconfig):
-    context = browser.new_context()
-    page = context.new_page()
+    default_url = pytestconfig.getini("default_url") or "https://the-internet.herokuapp.com/"
 
-    default_url = pytestconfig.getini("default_url")
+    context = browser.new_context(base_url=default_url)
+    # Creating new page with the default URL
+    page = context.new_page()
     if default_url:
         page.goto(default_url)
     else:
         raise ValueError(f"Default URL not set in pytest.ini: {default_url}")
-    page.set_default_timeout(10000)  # Set a default timeout for actions
+    page.set_default_timeout(10000)
+    page.once("load", lambda : print("Index page loaded!"))  # Set a default timeout for actions
     yield page
     context.close()
 

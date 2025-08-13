@@ -14,14 +14,15 @@ def get_checkbox2(self):
 
 class TestCheckBoxPage:
 
-    def __init__(self, page: Page):
-        self.page = page
+    #def __init__(self, page: Page):
+        #self.page = page
     
     def test_has_title(self):
         expect(self).to_have_title(re.compile("The Internet"))
     
     def test_is_home(self, page):
         expect(self).to_have_url("**/")
+        print(page.url)
         expect(self).get_by_role("heading")
         assert "" in page.content()
 
