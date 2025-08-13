@@ -12,12 +12,6 @@ user_password_fail = "NotSecretPassword%"
 def get_heading_text():
     return get_value("pages", "loginpage_heading")
 
-def get_usernameinput(self):
-        return self.page.locator("form#login").get_by_role("input", name="username")
-
-def get_passwordinput(self):
-        return self.page.locator("form#login").get_by_role("input", name="password")
-
 @pytest.mark.usefixtures("page")
 class TestLoginPage:
     @pytest.fixture(autouse=True)
@@ -30,6 +24,15 @@ class TestLoginPage:
     def setup_method(self, method):
         pass
 
+    def get_usernameinput(self):
+        return self.page.locator("form#login").get_by_role("textbox", name="Username")
+
+    def get_passwordinput(self):
+        return self.page.locator("form#login").get_by_role("textbox", name="Password")
+    
+    def goto_login_page(self):
+        self.page.goto("/login")
+
     def test_has_title(self):
         expect(self.page).to_have_title(re.compile("The Internet"))
 
@@ -39,37 +42,40 @@ class TestLoginPage:
 
         expect(self.page.get_by_role("heading", name="Login Page")).to_be_visible()
         page_heading = get_heading_text()
-        expect(self.page.locator("h3")).to_have_text(page_heading)
+        expect(self.page.locator("h2")).to_have_text(page_heading)
 
 
     def test_get_form_inputs(self):
-        usertextbox_locator = get_usernameinput
+        goto_login_page = self.goto_login_page
+        goto_login_page()
+        usertextbox_locator = self.get_usernameinput
+        print(usertextbox_locator.__name__)
         usertextbox_locator().fill(user_login)
         expect(usertextbox_locator).to_contain_text(user_login)
         usertextbox_locator.clear()
         expect(usertextbox_locator).to_contain_text("")
 
-        passtextbox_locator = get_passwordinput
-        usertextbox_locator().fill(user_password)
+        passtextbox_locator = self.get_passwordinput
+        passtextbox_locator().fill(user_password)
         expect(passtextbox_locator).to_contain_text(user_password)
         passtextbox_locator.clear()
         expect(passtextbox_locator).to_contain_text("")
 
     def test_form_inputs_fail(self):
-        usertextinput_locator = get_usernameinput
+        usertextinput_locator = self.get_usernameinput
         usertextinput_locator().fill(user_login_fail)
         expect(usertextinput_locator).to_contain_text(user_login_fail)
 
-        passtextinput_locator = get_passwordinput
+        passtextinput_locator = self.get_passwordinput
         passtextinput_locator().fill(user_password_fail)
         expect(passtextinput_locator).to_contain_text(user_password_fail)
 
 
     def test_form_login(self):
-        usertextbox_locator = get_usernameinput
+        usertextbox_locator = self.get_usernameinput
         usertextbox_locator().fill(user_login)
         
-        passtextbox_locator = get_passwordinput
+        passtextbox_locator = self.get_passwordinput
         passtextbox_locator().fill(user_password)
 
         submit_btn_locator = self.page.get_by_role("button", name="submit")
