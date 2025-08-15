@@ -12,10 +12,11 @@ def get_checkbox1(self):
 def get_checkbox2(self):
     return self.page.locator("form#checkboxes").get_by_role("checkbox").nth(1)
 
+@pytest.mark.usefixtures("page")
 class TestCheckBoxPage:
-
-    #def __init__(self, page: Page):
-        #self.page = page
+    @pytest.fixture(autouse=True)
+    def setup_page(self, page):
+        self.page = page
     
     def test_has_title(self):
         expect(self).to_have_title(re.compile("The Internet"))

@@ -38,7 +38,7 @@ class TestLoginPage:
 
     def test_get_login_link(self):
         #self.page = page
-        self.page.goto("/login", wait_until="networkidle")
+        self.page.goto("/login", wait_until="domcontentloaded")
 
         expect(self.page.get_by_role("heading", name="Login Page")).to_be_visible()
         page_heading = get_heading_text()
@@ -51,24 +51,24 @@ class TestLoginPage:
         usertextbox_locator = self.get_usernameinput
         print(usertextbox_locator.__name__)
         usertextbox_locator().fill(user_login)
-        expect(usertextbox_locator).to_contain_text(user_login)
+        expect(usertextbox_locator).to_contain_value(user_login)
         usertextbox_locator.clear()
-        expect(usertextbox_locator).to_contain_text("")
+        expect(usertextbox_locator).to_contain_value("")
 
         passtextbox_locator = self.get_passwordinput
         passtextbox_locator().fill(user_password)
-        expect(passtextbox_locator).to_contain_text(user_password)
+        expect(passtextbox_locator).to_contain_value(user_password)
         passtextbox_locator.clear()
-        expect(passtextbox_locator).to_contain_text("")
+        expect(passtextbox_locator).to_contain_value("")
 
     def test_form_inputs_fail(self):
         usertextinput_locator = self.get_usernameinput
         usertextinput_locator().fill(user_login_fail)
-        expect(usertextinput_locator).to_contain_text(user_login_fail)
+        expect(usertextinput_locator).to_contain_value(user_login_fail)
 
         passtextinput_locator = self.get_passwordinput
         passtextinput_locator().fill(user_password_fail)
-        expect(passtextinput_locator).to_contain_text(user_password_fail)
+        expect(passtextinput_locator).to_contain_value(user_password_fail)
 
 
     def test_form_login(self):
