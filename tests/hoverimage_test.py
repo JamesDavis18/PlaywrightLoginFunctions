@@ -8,6 +8,10 @@ def heading_text():
 
 @pytest.mark.usefixtures("page")
 class TestHoverProfilePage:
+    @pytest.fixture(autouse=True)
+    def navigate_before_test(self):
+        self.page.goto("/hovers", wait_until="")
+
     def setup_page(self, page: Page):
         self.page = page
         #self.page = page
@@ -21,12 +25,8 @@ class TestHoverProfilePage:
     def get_hoverelement3(self):
         return self.page.locator("#content").get_by_role("img", name="User Avatar").nth(2)
 
-    def test_has_title(page):
-        expect(page).to_have_title(re.compile("The Internet"))
-    
-    @pytest.fixture(autouse=True)
-    def navigate_before_test(self, page):
-        self.page.goto("/hovers", wait_until="")
+    def test_has_title(self):
+        expect(self).to_have_title(re.compile("The Internet"))
 
     def is_home(self, page):
         expect(self).to_have_url("**/")

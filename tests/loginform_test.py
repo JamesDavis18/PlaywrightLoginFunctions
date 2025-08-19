@@ -15,14 +15,15 @@ def get_heading_text():
 @pytest.mark.usefixtures("page")
 class TestLoginPage:
     @pytest.fixture(autouse=True)
-    def setup_page(self, page):
-        self.page = page
-        #self.page.goto("**/login")
-        #if not self.page.url.endswith("/login"):
-            #raise ValueError("Page did not navigate to the login page.")
+    def setup_page(self, page: Page):
+        page.goto("/login", wait_until="domcontentloaded")
+        page.wait_for_url("/login")
 
-    def setup_method(self, method):
+        self.page = page
         pass
+        #self.page.goto("**/login")
+        if not self.page.url.endswith("/login"):
+            raise ValueError("Page did not navigate to the login page.")
 
     def get_usernameinput(self):
         return self.page.locator("form#login").get_by_role("textbox", name="Username")
@@ -46,8 +47,7 @@ class TestLoginPage:
 
 
     def test_get_form_inputs(self):
-        goto_login_page = self.goto_login_page
-        goto_login_page()
+        #goto_login_page = self.goto_login_page
         usertextbox_locator = self.get_usernameinput
         print(usertextbox_locator.__name__)
         usertextbox_locator().fill(user_login)
