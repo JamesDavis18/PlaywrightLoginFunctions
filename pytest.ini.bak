@@ -1,8 +1,15 @@
 [pytest]
 #Supported values "chromium", "firefox", "webkit"
+<<<<<<< HEAD
+browser_type = firefox
+checkboxpage_heading = Checkboxes
+hoverpage_heading = Hover
+
+=======
 testpaths = tests
 python_files = test_*.py *_test.py
 browser_type = firefox
 #The path to the test files
 default_url = https://the-internet.herokuapp.com/
 #testpath = tests
+>>>>>>> master
