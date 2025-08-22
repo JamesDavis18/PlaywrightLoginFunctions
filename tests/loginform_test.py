@@ -4,8 +4,8 @@ import re
 import random
 import string
 from playwright.sync_api import sync_playwright, Page, expect
-config_loader = __import__("tests.config_loader")
-from tests.config_loader import get_value
+config_loader = __import__("config_loader")
+from config_loader import get_value
 
 user_login = "tomsmith"
 user_login_fail = "stevesmith"
