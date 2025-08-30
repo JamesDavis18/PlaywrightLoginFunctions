@@ -71,7 +71,7 @@ class TestCheckBoxPage:
         chckbox_1 = self.page.locator("#checkboxes input").first
         expect(chckbox_1).not_to_be_checked()
         chckbox_1.check(force=True)
-        time.sleep(5)
+        time.sleep(2)
         #expect(self.page.get_by_label("checkbox 1")).to_be_checked()
         chckbox_1.uncheck()
         expect(chckbox_1).not_to_be_checked()
@@ -79,9 +79,10 @@ class TestCheckBoxPage:
         chckbox_2 = self.page.locator("#checkboxes input").nth(1)
         #expect(chckbox_2).to_be_checked()
         chckbox_2.uncheck()
+        time.sleep(2)
         expect(chckbox_2).not_to_be_checked()
         chckbox_2.check()
-        expect(chckbox_1).to_be_checked()
+        expect(chckbox_2).to_be_checked()
         
         """ checkbox1_locator = self.get_checkbox1()
         checkbox1_locator.first.uncheck()
@@ -98,6 +99,17 @@ class TestCheckBoxPage:
         checkbox2_label = self.page.locator("form#checkboxes").get_by_text("checkbox 2")
         expect(checkbox2_label).to_be_visible()
         expect(checkbox2_label).to_be_in_viewport()
+
+    def test_doubleclick_checkboxes(self):
+        chckbox_1 = self.page.locator("#checkboxes input").first
+        expect(chckbox_1).not_to_be_checked()
+        chckbox_1.dblclick()
+        expect(chckbox_1).not_to_be_checked()
+
+        chckbox_2 = self.page.locator("#checkboxes input").nth(1)
+        expect(chckbox_2).not_to_be_checked()
+        chckbox_2.dblclick()
+        expect(chckbox_2).not_to_be_checked()
         
 """     def test_check_individual_checkboxes(self):
         checkbox1_locator = self.get_checkbox1()
