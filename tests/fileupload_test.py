@@ -70,6 +70,9 @@ class TestFileUploadPage:
         upload_children = drag_drop_area.all_text_contents().count
         count = upload_children.count()
         assert count == 0
+        upload_btn_locator = self.get_file_upload_button()
+        upload_btn_locator.click()
+        expect(self.page.locator("h3").get_by_role("heading", name="File Uploaded!")).to_be_visible()
     
     def test_drap_drop(self):
         file_path = Path(__file__).parent.parent / "files" / "logo.png"
