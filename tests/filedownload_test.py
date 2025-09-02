@@ -4,9 +4,11 @@ from tests.config_loader import get_value
 
 def heading_text():
     return get_value("pages", "hfiledownloadpage_heading")
-
+@pytest.mark.usefixtures("page")
 class TestFileDownloadPage:
-    
+    @pytest.fixture(autouse=True)
+    def navigate_before_test(self, page: Page):
+        self.page.goto("/file_download", wait_until="domcontentlaoded")
     #def __init__(self, page: Page):
         #self.page = page
     
@@ -23,5 +25,7 @@ class TestFileDownloadPage:
 
         expect(self.get_by_role("heading", name="Login Page")).to_be_visible()
         expect(self.page.locator("h3")).to_have_text(heading_text())
+    
+
     
 print(f"{TestFileDownloadPage} tests completed")
