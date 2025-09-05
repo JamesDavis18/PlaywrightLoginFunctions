@@ -34,11 +34,12 @@ class TestCheckBoxPage:
     def test_get_checkbox_link(self):
         self.page.goto("/")
         self.page.wait_for_url("**/")
-        self.page.get_by_role("link", name="/Checkboxes").click()
+        self.page.get_by_role("link", name="Checkboxes").click()
 
+        self.page.wait_for_load_state("domcontentloaded")
         expect(self.page.get_by_role("heading", name="Checkboxes")).to_be_visible()
         heading = self.page.locator("h3")
-        expect(heading.inner_text() == get_heading_text)
+        assert(heading.text_content() == get_heading_text())
 
     def test_allCheckboxes(self):
         checkboxes = self.page.locator("#checkboxes input")
@@ -107,9 +108,9 @@ class TestCheckBoxPage:
         expect(chckbox_1).not_to_be_checked()
 
         chckbox_2 = self.page.locator("#checkboxes input").nth(1)
-        expect(chckbox_2).not_to_be_checked()
+        expect(chckbox_2).to_be_checked()
         chckbox_2.dblclick()
-        expect(chckbox_2).not_to_be_checked()
+        expect(chckbox_2).to_be_checked()
         
 """     def test_check_individual_checkboxes(self):
         checkbox1_locator = self.get_checkbox1()
