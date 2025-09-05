@@ -1,5 +1,8 @@
 import re, pytest
 from playwright.sync_api import Playwright, Page, expect
+config_loader = __import__("config_loader")
+from config_loader import get_value
+
 
 subheading_text = "Welcome to the Secure Area. When you are done click logout below."
 user_name = "tomsmith"
@@ -17,6 +20,9 @@ class BaseLoggedInTest:
         page.wait_for_url("/secure")
         self.page = page
         pass
+        if not self.page.url.endswith("/secure"):
+            raise ValueError("Login Process to access the secure content page failed")
+        
 
 class TestLoggedInPage(BaseLoggedInTest):    
     def test_has_title(self):

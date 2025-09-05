@@ -44,8 +44,19 @@ class TestLoginPage:
     def get_passwordinput_name(self, element):
         return element.get_attribute("name")
     
-    def goto_login_page(self):
-        self.page.goto("/login")
+    def test_has_title(self):
+        expect(self.page).to_have_title(re.compile("The Internet"))
+    
+    def test_login_link(self):
+        self.page.goto("/")
+        self.page.wait_for_url("**/")
+        self.page.get_by_role("link", name="Form Authentication").click(timeout=3000)
+        
+        self.page.wait_for_load_state("domcontentloaded")
+        print(self.page.url)
+        expect(self.page.get_by_role("heading", name="Login Page")).to_be_visible()
+        heading = self.page.locator("h2")
+        assert(heading.text_content() == get_heading_text())
 
     def test_has_title(self):
         expect(self.page).to_have_title(re.compile("The Internet"))
@@ -56,7 +67,7 @@ class TestLoginPage:
 
         expect(self.page.get_by_role("heading", name="Login Page")).to_be_visible()
         page_heading = get_heading_text()
-        expect(self.page.locator("h2")).to_have_text(page_heading)
+        expect(self.page.get_by_role("heading")).to_be_visible()
 
 
     def test_get_form_inputs(self):
