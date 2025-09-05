@@ -1,2 +1,2 @@
 set PWDEBUG=1
-pytest -s \tests\checkbox_test.py
+pytest -s \tests\test_*.py %*
