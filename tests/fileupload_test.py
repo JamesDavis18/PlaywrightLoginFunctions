@@ -54,7 +54,8 @@ class TestFileUploadPage:
         upload_btn_locator.click()
         self.page.wait_for_load_state("domcontentloaded")
         expect(self.page.get_by_role("heading", name="File Uploaded!")).to_be_visible()
-        uploaded_files_area = self.page.locator("div#uploaded-files.panel.text-center").get_by_test_id("uploaded-files")
+        #uploaded_files_area = self.page.locator("div#uploaded-files.panel.text-center").get_by_test_id("#uploaded-files")
+        uploaded_files_area = self.page.locator("")
         expect(uploaded_files_area).to_be_visible()
         expect(uploaded_files_area).to_have_text("code_screen.jpg")
 
