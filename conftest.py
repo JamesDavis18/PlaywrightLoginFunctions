@@ -1,31 +1,36 @@
 import pytest
 from playwright.sync_api import sync_playwright
+import os
 
+# conftest.py
 #BROWSER_TYPE = "firefox"
 def pytest_addoption(parser):
-    parser.addini("browser_type", help="Browser type: chromium, firefox, webkit")
+    parser.addini("browser_type", help="Browser type: chromium, firefox, webkit, chrome-dev")
     try:
         parser.addoption("--my-browser", action="store", help="Override browser type")
     except ValueError:
         # Option already exists
         pass
-    parser.addini("default_url", help="Default URL for the tests")           
+    parser.addini("default_url", help="Default URL for the tests")
+    parser.addini("downloads_path", help="Default path where browser downloads are saved")           
 
 
 @pytest.fixture(scope="session")
 def browser(pytestconfig):
     browser_type = pytestconfig.getoption("browser") or pytestconfig.getini("browser_type")
+    file_download_path = pytestconfig.getini("downloads_path")
     #Launching one browser instance per test session
     with sync_playwright() as p:
         if browser_type == "chromium":
-            browser = p.chromium.launch(headless=False)
+            browser = p.chromium.launch(headless=False, downloads_path=file_download_path)
         elif browser_type == "firefox":
-            browser = p.firefox.launch(headless=False)
+            browser = p.firefox.launch(headless=False, downloads_path=file_download_path)
         elif browser_type == "webkit":
-            browser = p.webkit.launch(headless=False)
+            browser = p.webkit.launch(headless=False, downloads_path=file_download_path)
+        elif browser_type == "chrome-dev":
+            browser = p.chromium.launch(headless=False, downloads_path=file_download_path)
         else:
             raise ValueError(f"Invalid browser type: {browser_type}")
-        
         yield browser
         browser.close()
 
@@ -45,6 +50,13 @@ def page(browser, pytestconfig):
     yield page
     context.close()
 
+@pytest.fixture(scope="session")
+def downloads_dir(pytestconfig):
+    path = pytestconfig.getini("downloads_path") or "downloads"
+    os.makedirs(path, exist_ok=True)
+    return path
+
+    
 
 """ def run(playwright: sync_playwright):
     firefox = playwright.firefox

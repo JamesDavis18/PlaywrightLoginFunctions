@@ -1,6 +1,7 @@
 import re, pytest
 from playwright.sync_api import sync_playwright, Page, expect
-from tests.config_loader import get_value
+config_loader = __import__("config_loader")
+from config_loader import get_value
 from conftest import page
 
 def heading_text():
@@ -9,12 +10,16 @@ def heading_text():
 @pytest.mark.usefixtures("page")
 class TestHoverProfilePage:
     @pytest.fixture(autouse=True)
-    def navigate_before_test(self):
-        self.page.goto("/hovers", wait_until="")
+    def navigate_before_test(self, page: Page):
+        page.goto("/hovers", wait_until="domcontentloaded")
+        page.wait_for_url("/hovers")
 
-    def setup_page(self, page: Page):
         self.page = page
-        #self.page = page
+        pass
+        
+        if not self.page.url.endswith("/hovers"):
+            raise ValueError("Page did not navigate to the 'hovers' page")
+
 
     def get_hoverelement1(self):
         return self.page.locator("#content").get_by_role("img", name="User Avatar").first
